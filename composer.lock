@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf3c948f982e4ea5ec2fcaef27270719",
+    "content-hash": "91b12b5a850aa0e42433b083844f499f",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1259,6 +1259,59 @@
                 "uuid"
             ],
             "time": "2018-01-20T00:28:24+00:00"
+        },
+        {
+            "name": "sarfraznawaz2005/visitlog",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sarfraznawaz2005/visitlog.git",
+                "reference": "8863918d11629a8509df6832c6e3e2424844fb47"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sarfraznawaz2005/visitlog/zipball/8863918d11629a8509df6832c6e3e2424844fb47",
+                "reference": "8863918d11629a8509df6832c6e3e2424844fb47",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sarfraznawaz2005\\VisitLog\\VisitLogServiceProvider"
+                    ],
+                    "aliases": {
+                        "VisitLog": "Sarfraznawaz2005\\VisitLog\\Facades\\VisitLog"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sarfraznawaz2005\\VisitLog\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sarfraz Ahmed",
+                    "email": "sarfraznawaz2005@gmail.com"
+                }
+            ],
+            "description": "Laravel package to log visitor information into database.",
+            "keywords": [
+                "IP",
+                "laravel",
+                "log",
+                "visitor"
+            ],
+            "time": "2018-02-05T08:44:54+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

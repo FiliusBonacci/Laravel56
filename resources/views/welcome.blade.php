@@ -82,6 +82,7 @@
                     It's going to be something amazing ;)
                 </div>
 
+                {{ VisitLog::save() ? '':'' }}
             </div>
         </div>
     </body>
