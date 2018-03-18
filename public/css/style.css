@@ -1,0 +1,58 @@
+#chat-window {
+
+	height: 65vh;
+	overflow-y: scroll;
+	padding: 0;
+}
+
+
+#output{
+	
+    margin-left: -40px !important;
+	
+}
+
+
+#chat-window ul li,
+#chat-window ul{
+	text-decoration: none;
+	list-style: none;
+	margin: 0;
+}
+#chat-window ul {
+	margin: 0 !important;
+}
+
+#chat-window li{
+	padding: 10px 20px;
+}
+#chat-window li:nth-child(even){
+	background-color: #DAD7D6;
+	
+}
+
+#inputRow {
+	display: flex;
+}
+
+
+#message {
+  /* Shrink and grow as needed, but never shrink so
+     small that we can't read the placeholder */
+  flex: 1 0 8em;
+}
+#message:before {
+  /* Don't shrink or grow and use a default size */
+  flex: 0 0 2.75em;
+
+  /* ... */
+}
+#sendBtn{
+/* Never shrink or grow */
+  flex: 0 0 auto;
+}
+
+
+
+
+
