@@ -1,12 +1,17 @@
 @extends('layouts.app')
 
 @section('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('css/mainStyle.css') }}">
+{{--  <link rel="stylesheet" type="text/css" href="{{ asset('css/mainStyle.css') }}">  --}}
 
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
 
-
+<style>
+    #messages {
+        height: 60vh !important;
+        overflow-y: scroll;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -21,7 +26,7 @@
                         {{ csrf_field() }}
                         <div id="messages">
                             <div v-if="messages.length > 0">
-                                <message v-for="message in messages" key="message.id" :sender="message.name" :message="message.body" :createdat="message.created_at"></message>
+                                <message v-for="message in messages" :key="message.id" :sender="message.name" :message="message.body" :createdat="message.created_at"></message>
                             </div>
                             <div v-else>
                                 <div class="alert alert-warning">No chat yet!</div>
@@ -84,11 +89,11 @@
     components: {
 		message: {
 			props: ['sender', 'message', 'createdat'],
-			template: `<div><b>@{{sender}}</b> <sub class="createdat">@{{createdat}}</sub><p>@{{message}}</p></div>`,
+			template: `<div><b>@{{sender}}</b> <sub class="createdat">@{{createdat | moment("from") }}</sub><p>@{{message}}</p></div>`,
 			filters: {
 				showChatTime: function (createdat) {
 					var date = new Date(createdat);
-					date = ("0" + date.getDate()).slice(-2) + '/' + ("0" + date.getMonth()).slice(-2) + '/' + date.getFullYear() + ' ' +
+					date = ("0" + date.getDate()).slice(-2) + '.' + ("0" + date.getMonth()).slice(-2) + '.' + date.getFullYear() + '   ' +
 					("0" + date.getHours()).slice(-2) + ':' + ("0" + date.getMinutes()).slice(-2);
 					return date;
 				}
@@ -99,20 +104,28 @@
 		messages: [],
 		message: '',
 		isTyping: '',
-		onlineUsers: []
+        onlineUsers: []
 	},
 	methods: {
 		sendMessage: function(event) {
 			if(this.message.trim() == '' || this.message.trim == null) {
 				return;
 			}
-			var th = this;
+
+            var th = this;
+
+            this.messages.push({
+                name: '{{Auth::user()->name}}',
+                body: this.message,
+                created_at: '{{\Carbon\Carbon::now("Europe/Berlin")}}'
+            });
+
 			axios.post(postChatURL, {
 				'message': th.message,
 			})
 			.then(function (response) {
-				th.message = '';
-				th.messages.push(response.data);
+                th.message = '';
+				// th.messages.push(response.data);
 				th.adjustChatContainer();
 			})
 			.catch(function (error) {
@@ -123,7 +136,6 @@
 			var th = this;
 			axios.get(fetchChatURL)
 			.then(function (response) {
-                console.log(response.data);
 				th.messages = response.data;
 				th.adjustChatContainer();
 			})
@@ -161,9 +173,9 @@
 	},
 	mounted: function() {
 		if(fetchChatURL) {
-            console.log('sciagam');
 			this.fetchChat();
-		}
+        }
+        // console.log(Vue.moment().locale());
 	},
 	updated: function() {
 		this.adjustChatContainer();

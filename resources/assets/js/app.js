@@ -9,6 +9,16 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+// Vue.use(require('vue-moment'));
+const moment = require('moment')
+require('moment/locale/pl')
+// import VueMoment from 'vue-moment'
+// import moment from 'moment-timezone'
+
+Vue.use(require('vue-moment'), {
+    moment
+})
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -56,9 +56,13 @@ class MessagesController extends Controller
     
     public function getMessagesForConvId($id)
     {
-        $userMsg = DB::table('messages')
-                ->join('users', 'users.id','messages.from_user')
+        $userMsg = 
+                    DB::table('users')
+                ->join('messages', 'users.id','messages.from_user')
                 ->where('messages.conversation_id', $id)->get();
+        // $userMsg = DB::table('messages')
+        //         ->join('users', 'users.id','messages.from_user')
+        //         ->where('messages.conversation_id', $id)->get();
         return $userMsg;
     }
     
