@@ -2,3 +2,25 @@
 npm install socket.io --save
 npm install express --save
 npm install redis --save
+
+sudo npm install -g pm2
+pm2 start server.js
+
+
+
+
+
+
+
+------
+npm install browser-sync-webpack-plugin browser-sync --dev --save
+w webpack.mix.js 
+   .browserSync('localhost:8000');
+
+--------------
+npm install --save laravel-echo pusher-js
+npm install --save socket.io-client
+
+npm install -g laravel-echo-server
+laravel-echo-server init
+laravel-echo-server start
