@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use Illuminate\Http\Request;
 use DB;
 use Auth;
+use App\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class MessagesController extends Controller
 {
@@ -65,21 +66,23 @@ class MessagesController extends Controller
     
     
     //-------------------------------------------------------------------------
-    public function sendMessage(Request $request){
+    public function sendMessage($conversationId, Request $request){
         
         $conID = $request->conID;
-        $msg = $request->msg;
+        $msg = $request->message;
+        echo $msg;
+        echo $conversationId;
         
-        
-        $checkUserId = DB::table('messages')->where('conversation_id', $conID)->first();
+        $conversation = DB::table('conversations')->where('id', $conversationId)->first();
+        // $checkUserId = DB::table('messages')->where('conversation_id', $conversationId)->first();
         
         
         // fetch user_to
-        if($checkUserId->from_user == Auth::id()){
-            $userTo = $checkUserId->to_user;
+        if($conversation->user_one == Auth::id()){
+            $userTo = $conversation->user_two;
         }
         else {
-            $userTo = $checkUserId->to_user;
+            $userTo = $checkUserId->user_one;
         }
         
         // now send message
@@ -87,15 +90,16 @@ class MessagesController extends Controller
             'from_user' => Auth::id(),
             'to_user' => $userTo,
             'body' => $msg,
-            'conversation_id' => $conID,
+            'conversation_id' => $conversationId,
             'status' => 0,
+            'created_at' => Carbon::now(),
             ]);
             // dd($sendM);
             
             if($sendM){
                 $userMsg = DB::table('messages')
                 ->join('users', 'users.id','messages.from_user')
-                ->where('messages.conversation_id', $conID)->get();
+                ->where('messages.conversation_id', $conversationId)->get();
                 return $userMsg;
             }
             

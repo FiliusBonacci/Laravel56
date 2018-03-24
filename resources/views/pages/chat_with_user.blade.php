@@ -20,8 +20,8 @@
                     <form id="group-chat" class="form-horizontal" role="form" method="POST" @submit.prevent="sendMessage">
                         {{ csrf_field() }}
                         <div id="messages">
-                            <div v-if="messages.length">
-                                <message v-for="message in messages" key="message.id" :sender="message.sender.name" :message="message.message" :createdat="message.created_at"></message>
+                            <div v-if="messages.length > 0">
+                                <message v-for="message in messages" key="message.id" :sender="message.name" :message="message.body" :createdat="message.created_at"></message>
                             </div>
                             <div v-else>
                                 <div class="alert alert-warning">No chat yet!</div>
@@ -81,8 +81,22 @@
 
     var app = new Vue({
 	el: '#app',
+    components: {
+		message: {
+			props: ['sender', 'message', 'createdat'],
+			template: `<div><b>@{{sender}}</b> <sub class="createdat">@{{createdat}}</sub><p>@{{message}}</p></div>`,
+			filters: {
+				showChatTime: function (createdat) {
+					var date = new Date(createdat);
+					date = ("0" + date.getDate()).slice(-2) + '/' + ("0" + date.getMonth()).slice(-2) + '/' + date.getFullYear() + ' ' +
+					("0" + date.getHours()).slice(-2) + ':' + ("0" + date.getMinutes()).slice(-2);
+					return date;
+				}
+			}
+		},
+	},
 	data: {
-		messages: '',
+		messages: [],
 		message: '',
 		isTyping: '',
 		onlineUsers: []
@@ -109,6 +123,7 @@
 			var th = this;
 			axios.get(fetchChatURL)
 			.then(function (response) {
+                console.log(response.data);
 				th.messages = response.data;
 				th.adjustChatContainer();
 			})
@@ -146,6 +161,7 @@
 	},
 	mounted: function() {
 		if(fetchChatURL) {
+            console.log('sciagam');
 			this.fetchChat();
 		}
 	},
